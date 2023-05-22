@@ -2592,7 +2592,7 @@ static int ext4_xattr_move_to_block(handle_t *handle, struct inode *inode,
 			error = -ENOMEM;
 			goto out;
 		}
-		needs_kvfree = 1;
+
 		error = ext4_xattr_inode_get(inode, entry, buffer, value_size);
 		if (error)
 			goto out;
@@ -2631,7 +2631,7 @@ static int ext4_xattr_move_to_block(handle_t *handle, struct inode *inode,
 
 out:
 	kfree(b_entry_name);
-	if (needs_kvfree && buffer)
+	if (entry->e_value_inum && buffer)
 		kvfree(buffer);
 	if (is)
 		brelse(is->iloc.bh);
